@@ -240,7 +240,7 @@ export function InvoiceFormPage({ invoice, onSubmit, isSubmitting }: Props) {
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-6 p-6 max-w-[1400px] mx-auto">
+      <div className="flex flex-col xl:flex-row gap-6 p-6 max-w-[1400px] mx-auto">
         <div className="flex-1 min-w-0 space-y-6">
           <div className="bg-white rounded-xl border border-gray-200 p-6">
             <h2 className="text-sm font-semibold text-gray-900 mb-5">
@@ -489,7 +489,7 @@ export function InvoiceFormPage({ invoice, onSubmit, isSubmitting }: Props) {
           </div>
         </div>
 
-        <div className="flex-shrink-0 print-area">
+        <div className="w-[480px] flex-shrink-0 print-area">
           <InvoicePdf
             invoiceNumber={invoice?.invoiceNumber}
             customer={selectedCustomer}
