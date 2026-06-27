@@ -196,6 +196,50 @@ staff123
 
 ---
 
+## Architectural Decisions & Assumptions
+
+### Backend
+- **Modular architecture** — Each feature (auth, customers, products, invoices)
+  is separated into its own NestJS module to keep the codebase maintainable
+  and ready for future microservice extraction.
+
+- **Service layer separation** — Business logic lives in service classes,
+  controllers only handle HTTP request/response. This makes logic easier
+  to test and reuse.
+
+- **Prisma ORM** — Chosen for its type-safe query builder and seamless
+  integration with PostgreSQL.
+
+- **JWT Authentication** — Stateless auth using access tokens, suitable
+  for future microservice communication.
+
+### Frontend
+- **Next.js App Router** — Used for its file-based routing and support
+  for React Server Components.
+
+- **React Query** — Handles server state, caching, and background refetching
+  without excessive boilerplate.
+
+- **React Hook Form + Zod** — Form validation is schema-driven and type-safe,
+  reducing runtime errors.
+
+- **@react-pdf/renderer** — PDF generation is handled on the client side
+  to avoid additional server load.
+
+### Assumptions
+- One invoice cannot have duplicate products (enforced on the frontend).
+- Invoice total equals subtotal, with no tax or discount calculation applied.
+- Role management is seeded directly into the database, with no UI for
+  creating new roles.
+- A customer cannot be deleted if they have one or more associated invoices,
+  to preserve historical data integrity.
+- Invoice items are automatically deleted when their parent invoice is deleted
+  (cascade delete), ensuring no orphaned records remain in the database.
+
+## ERD
+<img width="878" height="853" alt="ERD mini erp" src="https://github.com/user-attachments/assets/7f48b836-afc1-4198-964c-c4f941802de0" />
+
+
 ## Screenshots
 
 Desktop
