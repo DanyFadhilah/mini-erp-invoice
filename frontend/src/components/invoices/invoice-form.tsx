@@ -262,7 +262,7 @@ export function InvoiceFormPage({ invoice, onSubmit, isSubmitting }: Props) {
 
             <div className="space-y-4">
               <div className="space-y-1.5">
-                <Label className="text-sm text-gray-700">
+                <Label className="text-sm text-gray-700 flex gap-0">
                   Customer <span className="text-red-500">*</span>
                 </Label>
                 <Select
@@ -295,9 +295,9 @@ export function InvoiceFormPage({ invoice, onSubmit, isSubmitting }: Props) {
                 </p>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <Label className="text-sm text-gray-700">
+                  <Label className="text-sm text-gray-700 flex gap-0">
                     Issue Date <span className="text-red-500">*</span>
                   </Label>
                   <Input type="date" {...register("issueDate")} />
@@ -308,7 +308,7 @@ export function InvoiceFormPage({ invoice, onSubmit, isSubmitting }: Props) {
                   )}
                 </div>
                 <div className="space-y-1.5">
-                  <Label className="text-sm text-gray-700">
+                  <Label className="text-sm text-gray-700 flex gap-0">
                     Due Date <span className="text-red-500">*</span>
                   </Label>
                   <Input type="date" min={issueDate} {...register("dueDate")} />
@@ -321,7 +321,9 @@ export function InvoiceFormPage({ invoice, onSubmit, isSubmitting }: Props) {
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-sm text-gray-700">Status</Label>
+                <Label className="text-sm text-gray-700 flex gap-0">
+                  Status <span className="text-red-500">*</span>
+                </Label>
                 <Select
                   value={status}
                   onValueChange={(val) =>
@@ -356,13 +358,13 @@ export function InvoiceFormPage({ invoice, onSubmit, isSubmitting }: Props) {
           </div>
 
           <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <h2 className="text-sm font-semibold text-gray-900 mb-5">
-              Invoice Items
+            <h2 className="text-sm font-semibold text-gray-900 mb-5 flex gap-0">
+              Invoice Items <span className="text-red-500">*</span>
             </h2>
 
             <div className="space-y-3">
               {fields.length > 0 && (
-                <div className="grid grid-cols-[1fr_80px_120px_120px_40px] gap-3 text-xs font-medium text-gray-500 pb-1 border-b border-gray-100">
+                <div className="hidden md:grid grid-cols-[1fr_80px_120px_120px_40px] gap-3 text-xs font-medium text-gray-500 pb-1 border-b border-gray-100">
                   <span>Product</span>
                   <span className="text-center">Qty</span>
                   <span className="text-right">Price</span>
@@ -377,7 +379,7 @@ export function InvoiceFormPage({ invoice, onSubmit, isSubmitting }: Props) {
                 return (
                   <div
                     key={field.id}
-                    className="grid grid-cols-[1fr_80px_120px_120px_40px] gap-3 items-center"
+                    className="border border-gray-100 rounded-lg p-3 space-y-3 md:border-0 md:p-0 md:space-y-0 md:grid md:grid-cols-[1fr_80px_120px_120px_40px] md:gap-3 md:items-center"
                   >
                     <div>
                       <Select
@@ -420,28 +422,54 @@ export function InvoiceFormPage({ invoice, onSubmit, isSubmitting }: Props) {
                       )}
                     </div>
 
-                    <Input
-                      type="number"
-                      min={1}
-                      value={currentItem?.qty ?? 1}
-                      onChange={(e) =>
-                        handleQtyChange(index, Number(e.target.value))
-                      }
-                      className="text-center"
-                    />
+                    <div className="flex flex-col gap-2 mt-2 md:mt-0 md:contents">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs text-gray-400 w-14 md:hidden">
+                          Qty
+                        </span>
+                        <Input
+                          type="number"
+                          min={1}
+                          value={currentItem?.qty ?? 1}
+                          onChange={(e) =>
+                            handleQtyChange(index, Number(e.target.value))
+                          }
+                          className="text-center w-20 md:w-full"
+                        />
+                      </div>
 
-                    <div className="text-right text-sm text-gray-600">
-                      {formatCurrency(currentItem?.price ?? 0)}
-                    </div>
+                      <div className="flex items-center justify-between md:justify-end">
+                        <span className="text-xs text-gray-400 md:hidden">
+                          Price
+                        </span>
+                        <span className="text-sm text-gray-600">
+                          {formatCurrency(currentItem?.price ?? 0)}
+                        </span>
+                      </div>
 
-                    <div className="text-right text-sm font-medium text-gray-900">
-                      {formatCurrency(currentItem?.amount ?? 0)}
+                      <div className="flex items-center justify-between md:justify-end md:gap-0">
+                        <div className="flex items-center gap-2 md:justify-end md:flex-1">
+                          <span className="text-xs text-gray-400 md:hidden">
+                            Amount
+                          </span>
+                          <span className="text-sm font-medium text-gray-900">
+                            {formatCurrency(currentItem?.amount ?? 0)}
+                          </span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => remove(index)}
+                          className="text-gray-400 hover:text-red-500 transition-colors md:hidden"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
                     </div>
 
                     <button
                       type="button"
                       onClick={() => remove(index)}
-                      className="flex items-center justify-center text-gray-400 hover:text-red-500 transition-colors"
+                      className="hidden md:flex items-center justify-center text-gray-400 hover:text-red-500 transition-colors"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -502,7 +530,7 @@ export function InvoiceFormPage({ invoice, onSubmit, isSubmitting }: Props) {
           </div>
         </div>
 
-        <div className="xl:w-[480px] flex-shrink-0 print-area">
+        <div className="hidden min-[500px]:block xl:w-[480px] flex-shrink-0 print-area">
           <InvoicePdf
             invoiceNumber={invoice?.invoiceNumber}
             customer={selectedCustomer}
