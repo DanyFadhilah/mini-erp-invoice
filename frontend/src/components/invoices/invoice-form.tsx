@@ -489,7 +489,7 @@ export function InvoiceFormPage({ invoice, onSubmit, isSubmitting }: Props) {
           </div>
         </div>
 
-        <div className="w-[480px] flex-shrink-0 print-area">
+        <div className="xl:w-[480px] flex-shrink-0 print-area">
           <InvoicePdf
             invoiceNumber={invoice?.invoiceNumber}
             customer={selectedCustomer}
