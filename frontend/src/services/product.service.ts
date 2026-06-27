@@ -1,5 +1,5 @@
 import { api } from "@/lib/axios";
-import { Product } from "@/types/product";
+import { ProductFormData } from "@/types/product";
 
 export async function getProducts(
   page = 1,
@@ -19,13 +19,13 @@ export async function getProducts(
   return response.data;
 }
 
-export async function createProduct(data: Product) {
+export async function createProduct(data: ProductFormData) {
   const response = await api.post("/products", data);
 
   return response.data;
 }
 
-export async function updateProduct(id: number, data: Product) {
+export async function updateProduct(id: number, data: ProductFormData) {
   const response = await api.patch(`/products/${id}`, data);
 
   return response.data;

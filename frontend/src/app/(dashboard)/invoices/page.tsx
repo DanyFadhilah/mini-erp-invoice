@@ -51,12 +51,12 @@ export default function InvoicePage() {
     },
     {
       header: "Customer",
-      accessor: "customer.name",
+      render: (invoice) => invoice.customer.name,
       sortable: true,
     },
     {
       header: "Type",
-      accessor: "user.name",
+      render: (invoice) => invoice.user.name,
       sortable: true,
     },
     {

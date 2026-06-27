@@ -1,5 +1,5 @@
 import { api } from "@/lib/axios";
-import { Invoice } from "@/types/invoice";
+import { InvoiceFormData } from "@/types/invoice";
 
 export async function getInvoices(
   page = 1,
@@ -25,13 +25,13 @@ export async function getInvoiceById(id: number) {
   return response.data;
 }
 
-export async function createInvoice(data: Invoice) {
+export async function createInvoice(data: InvoiceFormData) {
   const response = await api.post("/invoices", data);
 
   return response.data;
 }
 
-export async function updateInvoice(id: number, data: Invoice) {
+export async function updateInvoice(id: number, data: InvoiceFormData) {
   const response = await api.patch(`/invoices/${id}`, data);
 
   return response.data;

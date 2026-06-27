@@ -28,14 +28,16 @@ import { formatCurrency } from "@/lib/format";
 import { InvoicePdf } from "../pdf/invoice-pdf-review";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { InvoicePdfExport } from "../pdf/invoice-pdf-export";
+import { Customer } from "@/types/customer";
+import { Product } from "@/types/product";
 
 type InvoiceItemField = {
   productId: number;
-  productName: string;
-  productCode: string;
+  productName?: string;
+  productCode?: string;
   qty: number;
-  price: number;
-  amount: number;
+  price?: number;
+  amount?: number;
 };
 
 type InvoiceFormValues = Omit<InvoiceFormData, "items"> & {
@@ -63,11 +65,19 @@ export function getToday(): string {
   return local.toISOString().split("T")[0];
 }
 
+interface CustomerResponse {
+  data: Customer[];
+  meta: {
+    total: number;
+    totalPages: number;
+  };
+}
+
 export function InvoiceFormPage({ invoice, onSubmit, isSubmitting }: Props) {
   const router = useRouter();
   const isEdit = !!invoice;
 
-  const { data: customersData } = useQuery({
+  const { data: customersData } = useQuery<CustomerResponse>({
     queryKey: ["customers-all"],
     queryFn: () => getCustomers(1, 100),
   });
@@ -78,7 +88,7 @@ export function InvoiceFormPage({ invoice, onSubmit, isSubmitting }: Props) {
   });
 
   const customers = customersData?.data ?? [];
-  const products = productsData?.data ?? [];
+  const products = (productsData?.data ?? []) as Product[];
 
   const {
     register,
@@ -161,9 +171,12 @@ export function InvoiceFormPage({ invoice, onSubmit, isSubmitting }: Props) {
     if (!current) return;
 
     update(index, {
-      ...current,
+      productId: current.productId ?? 0,
+      productName: current.productName ?? "",
+      productCode: current.productCode ?? "",
       qty,
-      amount: current.price * qty,
+      price: current.price ?? 0,
+      amount: (current.price ?? 0) * qty,
     });
   }
 
@@ -493,11 +506,18 @@ export function InvoiceFormPage({ invoice, onSubmit, isSubmitting }: Props) {
           <InvoicePdf
             invoiceNumber={invoice?.invoiceNumber}
             customer={selectedCustomer}
-            issueDate={issueDate}
-            dueDate={dueDate}
-            status={status}
+            issueDate={issueDate ?? ""}
+            dueDate={dueDate ?? ""}
+            status={status ?? "DRAFT"}
             notes={notes}
-            items={items ?? []}
+            items={(items ?? []).map((item) => ({
+              productId: item.productId ?? 0,
+              productName: item.productName ?? "",
+              productCode: item.productCode ?? "",
+              qty: item.qty ?? 0,
+              price: item.price ?? 0,
+              amount: item.amount ?? 0,
+            }))}
             subtotal={subtotal}
             total={total}
           />

@@ -1,5 +1,15 @@
-import { InvoiceStatus } from "@/types/invoice";
 import { z } from "zod";
+import { Customer } from "./customer";
+import { Product } from "./product";
+
+export interface InvoiceItem {
+  id: number;
+  qty: number;
+  price: number;
+  amount: number;
+
+  product: Product;
+}
 
 export const invoiceStatusEnum = z.enum([
   "DRAFT",
@@ -9,9 +19,8 @@ export const invoiceStatusEnum = z.enum([
   "CANCELLED",
 ]);
 
-export const invoiceItemSchema = z.object({
+const invoiceItemSchema = z.object({
   productId: z.number().min(1, "Product is required"),
-
   qty: z.number().min(1, "Quantity must be at least 1"),
 });
 
@@ -44,10 +53,25 @@ export interface InvoiceFormItem {
 export type InvoiceStatus = "DRAFT" | "SENT" | "PAID" | "OVERDUE" | "CANCELLED";
 
 export interface Invoice {
-  customerId: number;
+  id: number;
+  invoiceNumber: string;
+
+  customer: Customer;
+
   issueDate: string;
   dueDate: string;
+
   status: InvoiceStatus;
   notes?: string;
-  items: InvoiceFormItem[];
+
+  subtotal: number;
+  total: number;
+  totalAmount: number;
+
+  user: {
+    id: number;
+    name: string;
+  };
+
+  items: InvoiceItem[];
 }
