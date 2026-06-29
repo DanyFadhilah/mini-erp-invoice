@@ -2,6 +2,7 @@ import { UsersService } from './../users/users.service';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { LoginDto } from './dto/login.dto';
 
 @Injectable()
 export class AuthService {
@@ -10,7 +11,9 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async login(email: string, password: string) {
+  async login(dto: LoginDto) {
+    const { email, password } = dto;
+
     const user = await this.UsersService.findByEmail(email);
 
     if (!user) {
@@ -30,7 +33,12 @@ export class AuthService {
     };
 
     return {
-      access_token: this.jwtService.sign(payload),
+      accessToken: this.jwtService.sign(payload),
+      user: {
+        id: user.id,
+        email: user.email,
+        role: user.role.name,
+      },
     };
   }
 }
