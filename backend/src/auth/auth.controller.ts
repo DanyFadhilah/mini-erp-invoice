@@ -32,6 +32,7 @@ export class AuthController {
       httpOnly: true,
       secure: true,
       sameSite: 'lax',
+      domain: '.dany.beauty',
       maxAge: 1000 * 60 * 60 * 24,
     });
 

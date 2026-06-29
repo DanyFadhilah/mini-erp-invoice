@@ -18,7 +18,7 @@ async function bootstrap() {
   );
 
   app.enableCors({
-    origin: ['http://localhost:3001', 'https://mini-erp-invoice.vercel.app'],
+    origin: ['http://localhost:3001', 'https://invoice.dany.beauty'],
     credentials: true,
   });
 
