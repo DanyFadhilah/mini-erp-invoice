@@ -6,17 +6,15 @@ export interface LoginPayload {
 }
 
 export const login = async (payload: LoginPayload) => {
-  const response = await api.post("/auth/login", payload);
-
-  const token = response.data.access_token;
-
-  localStorage.setItem("token", token);
-
-  return response.data;
+  await api.post("/auth/login", payload);
 };
 
 export const getProfile = async () => {
   const response = await api.get("/auth/profile");
 
   return response.data;
+};
+
+export const logout = async () => {
+  await api.post("/auth/logout");
 };

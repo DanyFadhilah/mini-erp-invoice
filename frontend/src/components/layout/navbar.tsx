@@ -7,12 +7,13 @@ import { Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Sidebar } from "./sidebar";
 import { useState } from "react";
+import { logout } from "@/services/auth.service";
 
 export function Navbar() {
   const router = useRouter();
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
+  const handleLogout = async () => {
+    await logout();
 
     router.push("/login");
   };
